@@ -1,0 +1,26 @@
+nav .logo
+{
+
+  font-size: xx-large;
+  font-weight: 900;
+  font-style: italic;
+  font-family: sans-serif;
+  letter-spacing: 4px;
+}
+.hero-container
+{
+  position: absolute;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  top: 268px;
+  margin-left: 15%; 
+}
+
+.margin_extra
+{
+  margin-left: 30%;
+}
+
+@import "bootstrap";
