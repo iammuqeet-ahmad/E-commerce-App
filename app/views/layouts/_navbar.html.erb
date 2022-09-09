@@ -10,8 +10,7 @@
       <button class="btn btn-outline-success m-2 my-sm-0 " type="submit">Search</button>
     </form>
     <%if user_signed_in?%>
-      <%=link_to "SignOut", destroy_user_session_path, class: "btn btn-outline-danger my-sm-0 px-3 margin_extra"%>
-                
+      <%=link_to "SignOut", destroy_user_session_path, :method => :delete, class: "btn btn-outline-danger my-sm-0 px-3 margin_extra"%>
     <%else%>  
       <%=link_to "LogIn", new_user_session_path, class: "btn btn-outline-primary my-sm-0 px-3 margin_extra"%>
       <%=link_to "SignUp", new_user_registration_path, class: "btn btn-outline-primary m-3 my-sm-0 px-3"%>
