@@ -1,6 +1,5 @@
 nav .logo
 {
-
   font-size: xx-large;
   font-weight: 900;
   font-style: italic;
@@ -17,10 +16,17 @@ nav .logo
   top: 268px;
   margin-left: 15%; 
 }
-
 .margin_extra
 {
   margin-left: 30%;
 }
-
+div .custom_container 
+{
+  height: 350px;
+  overflow: scroll !important;
+}
+.font-bold
+{
+  font-weight: 600 !important;
+}
 @import "bootstrap";

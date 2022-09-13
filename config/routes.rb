@@ -3,5 +3,9 @@ Rails.application.routes.draw do
   root "users#index"
   devise_for :users
   resources :users
-  resources :products
+  resources :products do
+    resources :comments, only: [:create, :update, :destroy]
+  end
+
+ 
 end

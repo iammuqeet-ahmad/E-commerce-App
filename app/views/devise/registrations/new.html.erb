@@ -28,13 +28,10 @@
     <%= f.text_field :name, autocomplete: "name" %>
   </div>
 
-  <%
-=begin%>
- <div class="field mt-4">
+  <div class="field mt-4">
     <%= f.file_field :avatar, direct_upload: true, required: true, accept: 'image/png,image/jpeg,image/jpg'%>
   </div> 
-<%
-=end%>
+
 
   <div class="actions mt-4">
     <%= f.submit "Sign up" %>

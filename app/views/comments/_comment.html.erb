@@ -1,0 +1,19 @@
+<div id="comment-<%=comment.id%>">
+  <div class="card p-3 w-50 m-3">
+    <p class="font-bold"><%=comment.user.name%></p>
+    <div class=""><%=comment.content%></div>
+    <div class ="text-muted"><small>[<%= comment.created_at.strftime("%I:%M %p")%>]</small></div>
+    <div class="d-flex m-1">
+    <%if user_signed_in?%>
+      <%if comment.user_id==current_user.id%>
+        <%= link_to "Edit", product_comment_path(product_id: @product.id, id: comment.id), :class => "btn btn-warning m-1"%>
+        <%= link_to "Delete", product_comment_path(product_id: @product.id, id: comment.id),method: :delete,remote: true, :class => "btn btn-danger m-1" %>
+      <%end%>
+    <%else%>      
+        <button class="btn btn-warning m-1">Edit</button>
+        <button class="btn btn-danger m-1">Delete</button>
+    <%end%>
+    </div>
+  </div>
+
+</div>

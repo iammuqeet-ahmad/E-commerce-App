@@ -1,9 +1,7 @@
 class ProductsController < ApplicationController
-
   def index
-    @products = Product.with_attached_images.order(:id).page params[:page]
+    @products = Product.order(:id).page params[:page]
   end
-
   def new
     if user_signed_in?
       @product = Product.new
@@ -12,7 +10,6 @@ class ProductsController < ApplicationController
       redirect_to new_user_session_path
     end
   end
-
   def create
     @product = Product.new(product_params)
     @product.user_id= current_user.id
@@ -20,28 +17,18 @@ class ProductsController < ApplicationController
     if @product.save  
       flash[:notice] = "Successfully Added product."
       redirect_to product_path(@product)
-    else  
+    else   
       render 'new', alert: "Failed to add product"
     end
   end
-
   def show
     @product= Product.find(params[:id])
-  end
-
-  def update
-  end
-
-  def destroy
+    @comment = Comment.new
+    @comments = @product.comments.order("created_at DESC")
   end
 
   private
-
   def product_params
     params.require(:product).permit(:name,:description,:price, :user_id, :photos => [])
   end
-
-  # def user_login_validation
-  #   user_signed_in? ? true : false
-  # end
 end

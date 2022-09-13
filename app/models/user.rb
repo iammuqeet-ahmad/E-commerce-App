@@ -6,4 +6,5 @@ class User < ApplicationRecord
   validates :name, presence: true, length: {minimum: 3}
   has_many :products, dependent: :destroy
   has_one_attached :avatar, dependent: :destroy
+  has_many :comments, dependent: :destroy
 end
