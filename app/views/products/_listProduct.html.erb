@@ -1,0 +1,7 @@
+<div class="card-body">
+  <h5 class="card-title"><%=product.name%></h5>
+  <p class="card-text"><%=product.description%></p>
+</div>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item"><%=number_to_currency(product.price, :unit => "PKR ", :separator => ".", :delimiter => ",")%></li>
+</ul>

@@ -20,7 +20,7 @@
     <%= f.number_field :price %><br><br>
 
     <div class='form-outline form-white mb-4'>
-      <%= f.file_field :party_symbol, accept: 'image/png,image/jpeg,image/jpg',multiple:true, required: true , direct_upload: true, class: 'form-control text-center form-2' %>
+      <%= f.file_field :photos, accept: 'image/png,image/jpeg,image/jpg',multiple: true ,required: true , class: 'form-control text-center form-2' %>
     </div>
 
     <%= f.submit%>

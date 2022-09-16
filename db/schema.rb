@@ -46,13 +46,6 @@ ActiveRecord::Schema.define(version: 2022_09_12_150617) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "images", force: :cascade do |t|
-    t.bigint "imageable_id"
-    t.string "imageable_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "products", force: :cascade do |t|
     t.string "serialNo"
     t.string "name"

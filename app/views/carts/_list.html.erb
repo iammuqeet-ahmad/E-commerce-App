@@ -1,0 +1,9 @@
+<tr>
+  <td></td>
+  <td><%=cart.name%></td>
+  <td><%=cart.serialNo%></td>
+  <td><%=cart.description%></td>
+  <td></td>
+  <td><%=cart.price%></td>
+  <td><%= link_to "Remove", remove_in_cart_path(cart), method: :delete, class: "link-secondary"%></td>
+</tr>
