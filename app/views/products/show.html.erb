@@ -12,7 +12,11 @@
     <% if user_signed_in?%>
       <%if @product.user_id!= current_user.id%>
         <div class="card-body">
-          <%=link_to "Add to Cart", root_path, class: "btn btn-success mt-4"%>
+          <% if @cart.include?(@product) %>
+            <%= button_to "Remove from cart", remove_from_cart_path(@product), method: :delete, class: "btn btn-danger mt-4"%>
+          <% else %>
+            <%= button_to "Add to cart", add_to_cart_path(@product), class: "btn btn-success mt-4" %>
+          <% end %>
         </div>
       <%else%>
       <div class="d-flex">
@@ -43,7 +47,11 @@
         <%= render "comments/form" %>
     </div>
   <%end%>
-  <%if @product.comments.count!=0%>
+  <%
+=begin%>
+ <%if @product.comments.count!=0%> 
+<%
+=end%>
     <div class="custom_container bg-light mt-4"> 
       <div id="comment_pane">
         <% @comments.each do |comment|%>
@@ -51,7 +59,11 @@
         <%end%>
       </div>
     </div>
-  <%end%> 
+  <%
+=begin%>
+ <%end%>  
+<%
+=end%>
 <%if Product.count==0%>
   <h3>No Products are avaiable</h3>
 <%end%>

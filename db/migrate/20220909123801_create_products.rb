@@ -4,7 +4,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.string :serialNo
       t.string :name
       t.text :description
-      t.float :price
+      t.integer :price
       
       t.references :user, foreign_key: true
 

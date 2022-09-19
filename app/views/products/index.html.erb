@@ -1,35 +1,41 @@
 <div class="container">
-  <%@products.each do |product|%>
-    
-  <div class="card mt-4" style="width: 21rem;">
-    <%= image_tag(product.photos[0]) %> 
-    <%= render "listProduct", product: product%>
-    <div class="card-body text-muted">
-    <%=pluralize(product.comments.count," Review")%>
-    </div>
-    <div class="d-flex card-body">
-      <%=link_to "Show Details", product_path(product), class: "btn btn-primary mt-4 mx-2"%>
-      <%if user_signed_in?%>
-        <%if product.user_id!=current_user.id%>
-          <% if @cart.include?(product) %>
-            <%= button_to "Remove from cart", remove_from_cart_path(product), method: :delete, class: "btn btn-danger mt-4"%>
-          <% else %>
-            <%= button_to "Add to cart", add_to_cart_path(product), class:"btn btn-success mt-4" %>
-          <% end %>
-        <%else%>
-          <%=link_to "Edit" , edit_product_path(product), class: "btn btn-warning mt-4 mx-2"%>
-          <%=link_to "Delete" , product_path(product),method: :delete, class: "btn btn-danger mt-4 "%>
-        <%end%>
-      <%else%>
-          <% if @cart.include?(product) %>
-            <%= button_to "Remove from cart", remove_from_cart_path(product), method: :delete, class: "btn btn-danger mt-4"%>
-          <% else %>
-            <%= button_to "Add to cart", add_to_cart_path(product), class: "btn btn-success mt-4" %>
-          <% end %>
-      <%end%> 
+  <div class="container-fluid">
+    <div class="row">
+      <%@products.each do |product|%>
+      <div class="col-sm-4">
+  
+      <div class="card mt-4" style="width: 21rem;">
+        <%= image_tag(product.photos[0]) %> 
+        <%= render "listProduct", product: product%>
+        <div class="card-body text-muted">
+        <%=pluralize(product.comments.count," Review")%>
+        </div>
+        <div class="d-flex card-body">
+          <%=link_to "Show Details", product_path(product), class: "btn btn-primary mt-4 mx-2"%>
+          <%if user_signed_in?%>
+            <%if product.user_id!=current_user.id%>
+              <% if @cart.include?(product) %>
+                <%= button_to "Remove from cart", remove_from_cart_path(product), method: :delete, class: "btn btn-danger mt-4"%>
+              <% else %>
+                <%= button_to "Add to cart", add_to_cart_path(product), class:"btn btn-success mt-4" %>
+              <% end %>
+            <%else%>
+              <%=link_to "Edit" , edit_product_path(product), class: "btn btn-warning mt-4 mx-2"%>
+              <%=link_to "Delete" , product_path(product),method: :delete, class: "btn btn-danger mt-4 "%>
+            <%end%>
+          <%else%>
+              <% if @cart.include?(product) %>
+                <%= button_to "Remove from cart", remove_from_cart_path(product), method: :delete, class: "btn btn-danger mt-4"%>
+              <% else %>
+                <%= button_to "Add to cart", add_to_cart_path(product), class: "btn btn-success mt-4" %>
+              <% end %>
+          <%end%> 
+        </div>
+      </div>
+      </div>
+      <%end%>
     </div>
   </div>
-  <%end%>
 <%if Product.count==0%>
   <h3>No Products are avaiable</h3>
 <%end%>

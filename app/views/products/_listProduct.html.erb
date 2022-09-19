@@ -3,5 +3,5 @@
   <p class="card-text"><%=product.description%></p>
 </div>
 <ul class="list-group list-group-flush">
-  <li class="list-group-item"><%=number_to_currency(product.price, :unit => "PKR ", :separator => ".", :delimiter => ",")%></li>
+  <li class="list-group-item"><%=number_to_currency(product.price, :unit => "$", :separator => ".", :delimiter => ",")%></li>
 </ul>

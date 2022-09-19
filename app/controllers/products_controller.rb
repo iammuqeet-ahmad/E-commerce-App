@@ -1,7 +1,8 @@
 class ProductsController < ApplicationController
   before_action :remove_product, only: [:remove_from_cart, :remove_in_cart] 
   def index
-    @products = Product.order(:id).page params[:page]
+    @q= Product.ransack(params[:q])
+    @products= @q.result(distinct: true).order(:id).page params[:page]
   end
 
   def new
@@ -34,15 +35,22 @@ class ProductsController < ApplicationController
 
   def edit
     @product= Product.find(params[:id])
+    if current_user.id != @product.user_id
+      redirect_to root_path,:alert => "Failed to edit product."
+    end
   end
 
   def update
     @product= Product.find(params[:id])
-    if @product.update(product_params)
-      flash[:notice] = "Successfully Updated product."
-      redirect_to product_path(@product)
+    if current_user.id == @product.user_id
+      if @product.update(product_params)
+        flash[:notice] = "Successfully Updated product."
+        redirect_to product_path(@product)
+      else
+        render 'edit'
+      end
     else
-      render 'edit'
+      redirect_to root_path, :alert => "Error updating product."
     end
   end
   
@@ -60,15 +68,15 @@ class ProductsController < ApplicationController
   def add_to_cart
     id = params[:id].to_i
     session[:cart] << id unless session[:cart].include?(id)
-    redirect_to products_path(@product)
+    redirect_to products_path(@product), :notice => "Successfully added to cart."
   end
 
   def remove_from_cart
-    redirect_to products_path
+    redirect_to products_path, :notice => "Successfully removed from cart."
   end
   
   def remove_in_cart
-    redirect_to carts_path
+    redirect_to carts_path,  :notice => "Successfully removed from cart."
   end
 
   private

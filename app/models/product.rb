@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  paginates_per 3
+  paginates_per 6
   belongs_to :user
 
   has_many_attached :photos

@@ -17,14 +17,14 @@
       </tbody>
     </table>
     <div class="w-100 float-btn">
-      Total :    30000
+      <h5>Total : <%=number_to_currency(total_amount(@cart), :unit => "$", :separator => ".", :delimiter => ",")%></h5>
     </div>
-    <button class="btn btn-outline-dark text-uppercase float-btn">Proceed to checkout</button>
-    <%
-=begin%>
- <%=button_to "Proceed to CheckOut", checkout_create_path, params:{id: product.id}%> 
-<%
-=end%>
+  <%if user_signed_in?%>
+    <%=button_to "Proceed to checkout",carts_checkout_create_path,params: {amount: total_amount(@cart)},remote: true,class:"btn btn-outline-success text-uppercase float-btn"%> 
+  <%else%>
+    <%=button_to "Proceed to checkout",new_user_session_path,class:"btn btn-outline-success text-uppercase float-btn"%>
+  <%end%>
+
    <%else%>
     <div class="align-center">
     <h4>Your shopping bag is empty</h4>
