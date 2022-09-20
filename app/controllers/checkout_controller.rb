@@ -1,11 +1,11 @@
 class CheckoutController < ApplicationController
   # after_action :destroy_session, only: [:create]
   def create
-    total_amount = params[:amount]
+    # total_amount = params[:amount]
     @session = Stripe::Checkout::Session.create({
       payment_method_types: ['card'],
       line_items: [{
-        price_data: { currency: 'usd',product_data: { name: 'Total Amount'}, unit_amount: (total_amount.to_i * 100)},quantity: 1}],
+        price_data: { currency: 'usd',product_data: { name: 'Total Amount'}, unit_amount: (total(@cart).to_i * 100)},quantity: 1}],
       mode: 'payment',
       success_url: root_url,
       cancel_url: carts_url,
@@ -18,5 +18,13 @@ class CheckoutController < ApplicationController
   private
   def destroy_session
     session[:cart].delete(params[:id]) if session[:cart]
+  end
+
+  def total(cart)
+    sum=0
+    cart.each do |product|
+      sum=sum+product.price
+    end 
+    sum
   end
 end

@@ -11,13 +11,9 @@
     </ul>
     <% if user_signed_in?%>
       <%if @product.user_id!= current_user.id%>
-        <div class="card-body">
-          <% if @cart.include?(@product) %>
-            <%= button_to "Remove from cart", remove_from_cart_path(@product), method: :delete, class: "btn btn-danger mt-4"%>
-          <% else %>
-            <%= button_to "Add to cart", add_to_cart_path(@product), class: "btn btn-success mt-4" %>
-          <% end %>
-        </div>
+      <div class="card-body">
+        <%=render 'cartAddRemove', product: @product%>
+      </div>  
       <%else%>
       <div class="d-flex">
           <%=link_to "Edit" , edit_product_path(@product), class: "btn btn-warning m-2"%>
@@ -25,45 +21,21 @@
           </div>
       <%end%>
     <%else%>
-        <div class="card-body">
-          <% if @cart.include?(@product) %>
-            <%= button_to "Remove from cart", remove_from_cart_path(@product), method: :delete, class: "btn btn-danger mt-4"%>
-          <% else %>
-            <%= button_to "Add to cart", add_to_cart_path(@product), class: "btn btn-success mt-4" %>
-          <% end %>
-        </div>
+      <div class="card-body">
+        <%=render 'cartAddRemove', product: @product%>
+      </div>
     <%end%>  
   </div>
-  <% if user_signed_in?%>
-    <%if @product.user_id!= current_user.id%>
-      <div class="mt-4">
-        <h5>Leave a comment...</h5>
-        <%= render "comments/form" %>
-      </div> 
-    <% end %>
-  <%else%>
-    <div class="mt-4">
-        <h5>Leave a comment...</h5>
-        <%= render "comments/form" %>
-    </div>
+  <% if user_signed_in? && @product.user_id!= current_user.id%>
+      <%= render "comments/form" %>
   <%end%>
-  <%
-=begin%>
- <%if @product.comments.count!=0%> 
-<%
-=end%>
-    <div class="custom_container bg-light mt-4"> 
-      <div id="comment_pane">
-        <% @comments.each do |comment|%>
-          <%= render "comments/comment", comment: comment%>
-        <%end%>
-      </div>
+  <div class="custom_container bg-light mt-4"> 
+    <div id="comment_pane">
+      <% @comments.each do |comment|%>
+        <%= render "comments/comment", comment: comment%>
+      <%end%>
     </div>
-  <%
-=begin%>
- <%end%>  
-<%
-=end%>
+  </div>
 <%if Product.count==0%>
   <h3>No Products are avaiable</h3>
 <%end%>

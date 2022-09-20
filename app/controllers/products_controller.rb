@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :remove_product, only: [:remove_from_cart, :remove_in_cart] 
+  before_action :set_product, only: [:destroy, :update, :show, :edit]
   def index
     @q= Product.ransack(params[:q])
     @products= @q.result(distinct: true).order(:id).page params[:page]
@@ -27,21 +28,18 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product= Product.find(params[:id])
     @photos = @product.photos.page(params[:page]).per(1)
     @comment = Comment.new
     @comments = @product.comments.order("created_at DESC")
   end
 
   def edit
-    @product= Product.find(params[:id])
     if current_user.id != @product.user_id
       redirect_to root_path,:alert => "Failed to edit product."
     end
   end
 
   def update
-    @product= Product.find(params[:id])
     if current_user.id == @product.user_id
       if @product.update(product_params)
         flash[:notice] = "Successfully Updated product."
@@ -55,10 +53,16 @@ class ProductsController < ApplicationController
   end
   
   def destroy
-    @product = Product.find(params[:id])
-    @product.destroy
-    flash[:notice] = "Successfully Deleted product."
-    redirect_to products_path
+    if current_user.id == @product.user_id
+      if @product.destroy ### if else
+        flash[:notice] = "Successfully Deleted product."
+        redirect_to products_path
+      else
+        flash[:alert] = "Error deleting product."
+      end
+    else
+      flash[:alert] = "You are not authorized to delete this product"
+      redirect_to products_path
   end
 
   def search
@@ -88,4 +92,9 @@ class ProductsController < ApplicationController
     id = params[:id].to_i
     session[:cart].delete(id)
   end
+  
+  def set_product
+    @product = Product.find(params[:id])
+  end
+    
 end

@@ -20,15 +20,16 @@ class CommentsController < ApplicationController
     if @comment.update(comment_params)
       flash[:notice] = "Comment updated successfully."
       redirect_to product_comments_path(:product_id)
-    end
+    end ###
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
-    @comment_id=@comment.id
-    @comment.destroy
+    @comment = Comment.find(params[:id]) ###
+    @comment_id=@comment.id 
+    @comment.destroy ###
     flash[:notice] = "Comment deleted successfully."
   end
+
   private
   def comment_params 
     params.require(:comment).permit(:content,:product_id)
@@ -37,5 +38,4 @@ class CommentsController < ApplicationController
   def set_product
     @product = Product.find(params[:product_id]) 
   end
-
 end
