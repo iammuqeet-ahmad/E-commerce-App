@@ -1,10 +1,8 @@
+# frozen_string_literal: true
+
+# This is product helper
 module ProductsHelper
-  
-  def product_count()
-    if Product.count==0
-      return true
-    else
-      return false
-    end
+  def product_count
+    Product.count.zero?
   end
 end
