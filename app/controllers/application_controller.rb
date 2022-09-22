@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :initialize_session
   before_action :load_cart
-
+  before_action :set_search
+  
   private
   def initialize_session
     session[:cart] ||= []
@@ -13,6 +14,11 @@ class ApplicationController < ActionController::Base
 
   def load_cart
     @cart = Product.find(session[:cart])
+  end
+
+  def set_search
+    @q=Product.ransack(params[:q])
+    @products= @q.result(distinct: true).order(:id).page params[:page]
   end
   
   protected

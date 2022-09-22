@@ -1,9 +1,20 @@
 <tr>
-  <td></td>
+  <td>
+    <div class="cart-image">
+      <%= image_tag(cart.photos[0]) %> 
+    </div>
+  </td>
   <td><%=cart.name%></td>
   <td><%=cart.serialNo%></td>
   <td><%=cart.description%></td>
-  <td></td>
+  <td>
+    <div class="product-quantity">
+      <%= form_with model: @products,url: "products/#{cart.id}/update_quantity", method: :patch do |form| %>
+        <%= form.number_field :quantity, value:cart.quantity%>
+        <%= form.submit "Update" %>
+      <% end %>
+    </div>
+  </td>
   <td><%=number_to_currency(cart.price, :unit => "$", :separator => ".", :delimiter => ",")%></td>
   <td><%= link_to "Remove", remove_in_cart_path(cart), method: :delete, class: "link-secondary"%></td>
 </tr>

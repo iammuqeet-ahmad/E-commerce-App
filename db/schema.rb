@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2022_09_12_150617) do
     t.string "serialNo"
     t.string "name"
     t.text "description"
+    t.integer "quantity"
     t.integer "price"
     t.bigint "user_id"
     t.datetime "created_at", null: false

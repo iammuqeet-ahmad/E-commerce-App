@@ -5,6 +5,8 @@ nav .logo
   font-style: italic;
   font-family: sans-serif;
   letter-spacing: 4px;
+  margin-left: 130px;
+  margin-right: 252px;
 }
 .hero-container
 {
@@ -49,7 +51,7 @@ div .custom_container
 }
 .cart{
   @extend .sizing;
-  margin-left: 5rem;
+  margin-left: 1rem;
 
 }
 .cart-arrow{
@@ -78,6 +80,19 @@ div .custom_container
 {
   width: 54px;
   height: 54px;
+}
+
+.d-flex .padding-setting
+{
+  padding: 0 40px 0 40px;
+  justify-content: center;
+  align-items: center;  
+  flex-direction: column;
+}
+.cart-image img
+{
+  width: 50px;
+  margin-left: 12%;
 }
 
 @import "bootstrap";

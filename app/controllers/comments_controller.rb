@@ -1,33 +1,28 @@
 class CommentsController < ApplicationController
   before_action :set_product
-  before_action :authenticate_user!
-
+  before_action :set_comment, only: [:destroy, :update]
+ 
   def create
-    if @product.user_id!=current_user.id
-      @comment= @product.comments.new(comment_params)
-      @comment.user= current_user
-      @comment.save
-    else
-      redirect_back(fallback_location:product_path(:product_id))
-    end
-  end
-
-  def show; 
+    authorize @product, policy_class: CommentPolicy
+    @comment= @product.comments.new(comment_params)
+    @comment.user= current_user
+    @comment.save
   end
 
   def update
-    @comment=Comment.find(params[:id])
     if @comment.update(comment_params)
-      flash[:notice] = "Comment updated successfully."
+      flash[:success] = "Comment updated successfully."
       redirect_to product_comments_path(:product_id)
-    end ###
+    end
   end
 
   def destroy
-    @comment = Comment.find(params[:id]) ###
-    @comment_id=@comment.id 
-    @comment.destroy ###
-    flash[:notice] = "Comment deleted successfully."
+    authorize @comment
+    if @comment.destroy
+      flash[:success] = "Comment deleted successfully."
+    else
+      flash[:alert] = "Comment deletion unsuccessfully."
+    end
   end
 
   private
@@ -37,5 +32,9 @@ class CommentsController < ApplicationController
 
   def set_product
     @product = Product.find(params[:product_id]) 
+  end
+
+  def set_comment
+    @comment = Comment.find(params[:id])
   end
 end

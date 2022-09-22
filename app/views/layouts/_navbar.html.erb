@@ -4,24 +4,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <form class="d-flex align-items-right my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success m-2 my-sm-0 " type="submit">Search</button>
-    </form> 
-<%
-=begin%>
- 
-    <%=search_form_for @q,url: :products_path do |form|%>
-      <div class="form-group">
-        <%= form.label :Search%>
-        <%= form.text_field :name_cont%>
-      </div>
-      <div class="form-group">
-        <%= form.submit class:"btn btn-outline-success"%>
-      </div>
-    <%end%>  
-<%
-=end%>
+    
     <%if user_signed_in?%>
       <%=link_to "SignOut", destroy_user_session_path, :method => :delete, class: "btn btn-outline-danger my-sm-0 px-3 margin_extra"%>
     <%else%>  
@@ -29,23 +12,23 @@
       <%=link_to "SignUp", new_user_registration_path, class: "btn btn-outline-primary m-3 my-sm-0 px-3"%>
     <%end%>
 
-  <%= link_to carts_path do %>
-    <%= image_tag "cart.png", id:"logo", class:"cart"  %>
-  <% end %>
-  
-  <%if @cart.count!=0%>
-    <div class="numberCircle">
-      <span><%=@cart.count%></span>
-    </div>
-  <%end%>
-  <%if user_signed_in?%>
-    <div class="d-flex mx-4">
-       <%= image_tag(current_user.avatar,class:"rounded-circle avatar") %>
-       <p class="aliging"><%= current_user.name%></p>
-    </div>
-  <%end%>
+    <%= link_to carts_path do %>
+      <%= image_tag "cart.png", id:"logo", class:"cart"  %>
+    <% end %>
+    
+    <%if cart_count(@cart)%>
+      <div class="numberCircle">
+        <span><%=@cart.count%></span>
+      </div>
+    <%end%>
+
+    <%if user_signed_in?%>
+      <div class="d-flex mx-4">
+        <%= image_tag(current_user.avatar,class:"rounded-circle avatar") %>
+        <p class="aliging"><%= current_user.name%></p>
+      </div>
+    <%end%>
 
   </div> 
-
 </nav>
 

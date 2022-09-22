@@ -1,7 +1,10 @@
 module ProductsHelper
-  # def user_login_validation
-  #   if !user_signed_in?
-  #     flash[:notice] = "Please sign in or sign up before continuing."
-  #   end
-  # end
+  
+  def product_count()
+    if Product.count==0
+      return true
+    else
+      return false
+    end
+  end
 end
