@@ -11,6 +11,7 @@ class CheckoutController < ApplicationController
                                                                   unit_amount: (total_amount(@cart).to_i * 100) },
                                                     quantity: 1
                                                   }],
+
                                                   mode: 'payment',
                                                   success_url: success_msg_url,
                                                   cancel_url: carts_url
@@ -33,6 +34,7 @@ class CheckoutController < ApplicationController
       price = product.quantity * product.price
       sum += price
     end
-    sum
+    discount = sum * $val
+    sum - discount
   end
 end

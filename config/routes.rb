@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users, only: [:index]
   resources :products do
-    resources :comments, only: %i[create update destroy]
+    resources :comments, only: %i[create update destroy edit]
     member do
       patch :update_quantity
     end
@@ -18,4 +18,5 @@ Rails.application.routes.draw do
   delete 'products/remove_in_cart/:id', to: 'products#remove_in_cart', as: 'remove_in_cart'
   get '/messages', to: 'messages#success_msg', as: 'success_msg'
   get '/messages', to: 'messages#cancle_msg', as: 'cancle_msg'
+  post 'carts/coupon_check', to: 'carts#coupon_check', as: 'coupon_check'
 end
