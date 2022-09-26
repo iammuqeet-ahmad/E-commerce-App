@@ -10,7 +10,7 @@
   <td>
     <div class="product-quantity">
       <%= form_with model: @products,url: "products/#{cart.id}/update_quantity", method: :patch do |form| %>
-        <%= form.number_field :quantity, value:cart.quantity%>
+        <%= form.number_field :quantity, value:cart.quantity, min:1%>
         <%= form.submit "Update" %>
       <% end %>
     </div>

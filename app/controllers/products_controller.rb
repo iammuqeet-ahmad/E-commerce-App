@@ -2,27 +2,30 @@
 
 # This is product controller
 class ProductsController < ApplicationController
-  before_action :remove_product, only: %i[remove_from_cart remove_in_cart]
-  before_action :set_product, only: %i[destroy update show edit]
+  require 'securerandom' # for randomly generating serialNo (alphanumeric)
+  before_action :set_product, only: %i[destroy update show edit] # product finding function using params.
 
   def index
-    @q = Product.ransack(params[:q])
+    @q = Product.ransack(params[:q]) # q contains the seacrh params
+    # if search params exists then show that otherwise show all products
     @products = @q.result(distinct: true).order(:id).page params[:page]
   end
 
+  # user authentication for adding new product(user must be logged in)
   def new
     if user_signed_in?
       @product = Product.new
     else
       flash[:alert] = 'Pease login first to add Product'
-      redirect_to new_user_session_path
+      redirect_to new_user_session_path # otherwise rediresting to login page
     end
   end
 
+  # creating new product
   def create
     @product = Product.new(product_params)
-    @product.user_id = current_user.id
-    @product.serialNo = SecureRandom.alphanumeric(5)
+    @product.user_id = current_user.id # setting the current_user_id as the product_user_id
+    @product.serialNo = SecureRandom.alphanumeric(5) # generating the random serial  numberNo for the product
     @product.quantity = 1
     if @product.save
       flash[:success] = 'Successfully Added product.'
@@ -62,23 +65,9 @@ class ProductsController < ApplicationController
     end
   end
 
-  def add_to_cart
-    id = params[:id].to_i
-    session[:cart] << id unless session[:cart].include?(id)
-    redirect_to products_path, notice: 'Successfully added to cart.'
-  end
-
-  def remove_from_cart
-    redirect_to products_path, notice: 'Successfully removed from cart.'
-  end
-
-  def remove_in_cart
-    redirect_to carts_path, notice: 'Successfully removed from cart.'
-  end
-
   def update_quantity
     product = Product.find(params[:id])
-    product.quantity = params[:product][:quantity]
+    product.quantity = params[:quantity]
     product.save
     redirect_to carts_path, notice: 'Successfully updated'
   end
@@ -87,14 +76,6 @@ class ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit(:name, :description, :price, :user_id, photos: [])
-  end
-
-  def remove_product
-    id = params[:id].to_i
-    session[:cart].delete(id)
-    @product = Product.find_by(id: id)
-    @product.quantity = 1
-    @product.save
   end
 
   def set_product

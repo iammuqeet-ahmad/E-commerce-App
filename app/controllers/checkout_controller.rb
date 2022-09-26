@@ -23,10 +23,6 @@ class CheckoutController < ApplicationController
 
   private
 
-  def destroy_session
-    session[:cart]&.delete(params[:id])
-  end
-
   def total_amount(cart)
     sum = 0
     price = 0

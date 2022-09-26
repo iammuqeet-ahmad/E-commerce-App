@@ -2,7 +2,7 @@
  <form class="d-flex align-items-right my-2 my-lg-0">
     <%= search_form_for @q, url: products_path do |form|%>
         <div class="form-control mr-sm-2">
-          <%= form.text_field :name_cont, class:"border-0",placeholder:"Search..."%>
+          <%= form.text_field :name_or_description_or_serialNo_cont, class:"border-0",placeholder:"Search..."%>
         </div>
         <div class="form-group mx-2">
           <%= form.submit class:"btn btn-outline-success"%>
@@ -13,7 +13,7 @@
     <div class="row">
       <%@products.each do |product|%>
         <div class="col-sm-4">
-          <div class="card mt-4" style="width: 21rem;">
+          <div class="card mt-4 shadow" style="width: 21rem;">
             <%= image_tag(product.photos[0]) %> 
             <%= render "listProduct", product: product%>
             <div class="card-body text-muted">
@@ -48,3 +48,4 @@
   </div>
 
 </div>
+

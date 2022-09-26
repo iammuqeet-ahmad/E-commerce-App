@@ -12,11 +12,10 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
-
   # Full error reports are disabled and caching is turned on.
   config.action_controller.perform_caching = true
   config.consider_all_requests_local = true
-  config.action_mailer.default_url_options = { :host => 'e-commerce-213.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'e-commerce-213.herokuapp.com' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
@@ -40,7 +39,7 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   config.assets.configure do |env|
     env.js_compressor  = :uglifier # or :closure, :yui
-    env.css_compressor = :sass   # or :yui
+    env.css_compressor = :sass # or :yui
   end
   # config.assets.css_compressor = :sass
 
