@@ -4,23 +4,17 @@
 class ProductPolicy < ApplicationPolicy
   # This is scope
   class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
   end
 
   def update?
-    user.id == record.user_id
+    owner?
   end
 
   def edit?
-    user.id == record.user_id
+    owner?
   end
 
   def destroy?
-    user.id == record.user_id
+    owner?
   end
-  # %i[update? edit? destroy?].each do |action|
-  #   define_method action do
-  #     user.id == @product.user_id
-  #   end
-  # end
 end

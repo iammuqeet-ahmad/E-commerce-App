@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller? # some extra param to devise controller(avatar)
   before_action :initialize_session # initialize session (storing in the form of cookies on browser)
   before_action :load_cart # memories the products in the cart by using session of user.
+  rescue_from ActionController::RoutingError, with: :render404
+  rescue_from ActiveRecord::RecordNotFound, with: :render404
 
   private
 
@@ -29,5 +31,9 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_back(fallback_location: root_path)
+  end
+
+  def render404
+    render file: Rails.root.join('public/404.html'), status: :not_found
   end
 end

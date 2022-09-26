@@ -1,4 +1,12 @@
-<div class="container ml-3 p-3">
-  <h1>Add New Product</h1>
-  <%= render "form"%>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <div class="container shadow p-4 border-width-set">
+        <h2>Add New Product</h2>
+        <%= render "form"%>
+        <%=link_to "See All Products", products_path,method: :get, class: "btn btn-primary mt-4 ml-4"%>
+      </div>
+    </div>
+  </div>  
 </div>
+       

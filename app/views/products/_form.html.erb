@@ -10,19 +10,28 @@
 
 <%= form_for @product do |f| %>
    
+  <div class="field">
     <%=f.label :name %><br>
-    <%= f.text_field :name, required: true %><br>
+    <%= f.text_field :name, required: true , class:"form-control"%><br>
+  </div>
 
+  <div class="field">
     <%=f.label :description %><br>
-    <%= f.text_area :description,required: true  %><br><br>
+    <%= f.text_area :description,required: true  , class:"form-control"%><br><br>
+  </div>
 
+  <div class="field">
     <%=f.label :price %><br>
-    <%= f.number_field :price,required: true  %><br><br>
-    
-    <div class='form-outline form-white mb-4'>
-      <%= f.file_field :photos, accept: 'image/png,image/jpeg,image/jpg',multiple: true ,required: true , class: 'form-control text-center form-2' %>
-    </div>
+    <%= f.number_field :price,required: true  , class:"form-control"%><br><br>
+  </div>
 
-    <%= f.submit%>
-   
+  <div class="field">
+    <div class='form-outline form-white mb-4'>
+      <%= f.file_field :photos, accept: 'image/png,image/jpeg,image/jpg',multiple: true ,required: true , class:"form-control"%>
+    </div>
+  </div>
+
+  <div>
+    <%= f.submit %>
+  </div>
   <% end %> 

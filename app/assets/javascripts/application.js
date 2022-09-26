@@ -19,7 +19,7 @@
 //= require_tree .
 
 $(document).on('turbolinks:load', function () {
-  $('#flash_messages').delay(800).fadeOut();
+  $('#flash_messages').delay(1000).fadeOut();
 })
 
 

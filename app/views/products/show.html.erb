@@ -1,14 +1,14 @@
 <div class="container">     
   <h3>Product Details</h3>  
-    <div class="card mt-4" style="width: 18rem;">
+    <div class="card mt-4 shadow" style="width: 18rem;">
       <%@photos.each do |photo|%>
         <%= image_tag(photo) %>
       <%end%>
       
-      <%=paginate @photos%>
-      
+      <div class="overflow-hidden">
+        <%=paginate @photos, window:1%>
+      </div>
       <%= render "listProduct", product: @product%>
-      
       <ul class="list-group list-group-flush">
         <li class="list-group-item">Serial No.<%=@product.serialNo%></li>
       </ul>

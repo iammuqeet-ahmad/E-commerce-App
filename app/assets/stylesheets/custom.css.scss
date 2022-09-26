@@ -75,13 +75,11 @@ div .custom_container
   font-weight: 600;
   margin-left: 15px;
 }
-
 .d-flex .avatar
 {
   width: 54px;
   height: 54px;
 }
-
 .d-flex .padding-setting
 {
   padding: 0 40px 0 40px;
@@ -94,5 +92,9 @@ div .custom_container
   width: 50px;
   margin-left: 12%;
 }
+.border-width-set
+{
+  border-top: 3px solid blue;
 
+}
 @import "bootstrap";
