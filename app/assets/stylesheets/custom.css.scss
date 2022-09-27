@@ -63,6 +63,12 @@ div .custom_container
   @extend .sizing;
 
 }
+.warehouse
+{
+  @extend .sizing;
+  margin-left: 3rem;
+  margin-right: 2rem;
+}
 .home
 {
   font-weight: 500;

@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'users#index'
   devise_for :users
-  resources :users, only: [:index]
+
   resources :products do
+    resources :users, only: [:index]
     resources :comments, only: %i[create update destroy edit]
     member do
       patch :update_quantity
@@ -19,4 +20,5 @@ Rails.application.routes.draw do
   get '/messages', to: 'messages#success_msg', as: 'success_msg'
   get '/messages', to: 'messages#cancle_msg', as: 'cancle_msg'
   post 'carts/coupon_check', to: 'carts#coupon_check', as: 'coupon_check'
+  get '/my-products', to: 'products#my_products', as: 'my_products'
 end

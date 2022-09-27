@@ -30,5 +30,11 @@
       </div>
     <%end%>
 
+  <%if user_signed_in?%>
+    <%= link_to my_products_path do %>
+      <%= image_tag "warehouse.png", class:"warehouse"  %>
+    <% end %>
+  <%end%>
+
   </div> 
 </nav>
