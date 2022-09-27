@@ -20,8 +20,8 @@
           </div>  
         <%else%>
           <div class="d-flex">
-            <%=link_to "Edit" , edit_product_path(@product), class: "btn btn-warning m-2"%>
-            <%=link_to "Delete" , product_path(@product),method: :delete, class: "btn btn-danger m-2 "%>
+            <%=link_to "Edit" , edit_product_path(@product), class: "btn py-2 px-3 btn-warning m-2"%>
+            <%=link_to "Delete" , product_path(@product),method: :delete, class: "btn py-2 px-3 btn-danger m-2 "%>
           </div>
         <%end%>
       <%else%>
@@ -45,6 +45,6 @@
   <%if product_count()%>
     <h3>No Products are avaiable</h3>
   <%end%>
-  <%=link_to "Add Product", new_product_path,method: :get, class: "btn btn-primary mt-4"%>
-  <%=link_to "See All Products", products_path,method: :get, class: "btn btn-primary mt-4 ml-4"%>
+  <%=link_to "Add Product", new_product_path,method: :get, class: "btn py-2 px-3 btn-primary mt-4"%>
+  <%=link_to "See All Products", products_path,method: :get, class: "btn py-2 px-3 btn-primary mt-4 ml-4"%>
 </div>

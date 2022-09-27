@@ -1,11 +1,11 @@
 nav .logo
 {
-  font-size: xx-large;
+  font-size:xxx-large;
   font-weight: 900;
   font-style: italic;
   font-family: sans-serif;
   letter-spacing: 4px;
-  margin-left: 130px;
+  margin-left: 270px;
   margin-right: 252px;
 }
 .hero-container
@@ -17,6 +17,11 @@ nav .logo
   align-items: flex-start;
   top: 268px;
   margin-left: 15%; 
+}
+.hero-text-sizing
+{
+  font-size: 4rem;
+  margin-top: 25%;
 }
 .margin_extra
 {
@@ -33,25 +38,25 @@ div .custom_container
 }
 .numberCircle {
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   padding: 4px;
   background: blue;
   color: white;
   text-align: center;
-
-  font: 10px Arial, sans-serif;
+  font: 13px Arial, sans-serif;
   position: relative;
   top: -10px;
-  right: 12px;
+  right: 47px;
 }
 .sizing{
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
 }
 .cart{
   @extend .sizing;
-  margin-left: 1rem;
+  margin-left: 12rem;
+  margin-right: 2rem;
 
 }
 .cart-arrow{
@@ -69,6 +74,7 @@ div .custom_container
 }
 .aliging
 {
+  font-size: larger;
   margin-bottom: 0px;
   display: flex;
   align-items: center;
@@ -77,8 +83,8 @@ div .custom_container
 }
 .d-flex .avatar
 {
-  width: 54px;
-  height: 54px;
+  width: 74px;
+  height: 74px;
 }
 .d-flex .padding-setting
 {
