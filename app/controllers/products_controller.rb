@@ -3,24 +3,18 @@
 # This is product controller
 class ProductsController < ApplicationController
   require 'securerandom' # for randomly generating serialNo (alphanumeric)
-  before_action :set_product, only: %i[destroy update show edit] # product finding function using params.
+  before_action :set_product, only: %i[destroy update show edit] 
 
   def index
-    # @q = Product.ransack(params[:q]) # q contains the seacrh params
-    # # if search params exists then show that otherwise show all products
-    # @products = @q.result(distinct: true).order(:id).page params[:page]
-
-
-    if user_signed_in?
-      @q = Product.where('user_id != ?', current_user.id).ransack(params[:q])
-      @products = @q.result(distinct: true).order(:id).page params[:page]
-    else
-      @q = Product.ransack(params[:q]) # q contains the seacrh params
-      # if search params exists then show that otherwise show all products
-      @products = @q.result(distinct: true).order(:id).page params[:page]
-    end
+    @q = if user_signed_in?
+           Product.where('user_id != ?', current_user.id).ransack(params[:q])
+         else
+           Product.ransack(params[:q]) # q contains the seacrh params
+           # if search params exists then show that otherwise show all products
+         end
+    @products = @q.result(distinct: true).order(:id).page params[:page]
   end
-  
+
   def my_products
     @q = current_user.products.ransack(params[:q])
     @products = @q.result(distinct: true).order(:id).page params[:page]

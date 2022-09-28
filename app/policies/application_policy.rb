@@ -38,10 +38,11 @@ class ApplicationPolicy
   end
 
   private
-  
+
   def owner?
-    @user.id==@record.user_id
+    @user.id == @record.user_id
   end
+
   # Application Scope
   class Scope
     # Application Scope
