@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'users#index'
   devise_for :users
 
@@ -11,14 +10,30 @@ Rails.application.routes.draw do
     member do
       patch :update_quantity
     end
+    collection do
+      get :my_products
+    end
   end
-  resources :carts, only: %i[index destroy update]
-  post 'carts/checkout/create', to: 'checkout#create'
-  post 'carts/add_to_cart/:id', to: 'carts#add_to_cart', as: 'add_to_cart'
-  delete 'carts/remove_from_cart/:id', to: 'carts#remove_from_cart', as: 'remove_from_cart'
-  delete 'carts/remove_in_cart/:id', to: 'carts#remove_in_cart', as: 'remove_in_cart'
-  get '/messages', to: 'messages#success_msg', as: 'success_msg'
-  get '/messages', to: 'messages#cancle_msg', as: 'cancle_msg'
-  post 'carts/coupon_check', to: 'carts#coupon_check', as: 'coupon_check'
-  get '/my-products', to: 'products#my_products', as: 'my_products'
+
+  resources :carts, only: %i[index destroy update] do
+    member do
+      post :add_to_cart
+      delete :remove_from_cart
+      delete :remove_in_cart
+    end
+  end
+
+  resources :checkout, only: %i[create]
+  resources :messages, only: %i[] do
+    collection do
+      get :success_message
+      get :cancle_message
+    end
+  end
+
+  resources :coupons, only: %i[] do
+    collection do
+      post :coupon_check
+    end
+  end
 end

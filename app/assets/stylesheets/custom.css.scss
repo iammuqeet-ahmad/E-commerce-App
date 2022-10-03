@@ -1,12 +1,8 @@
 nav .logo
 {
-  font-size:xxx-large;
-  font-weight: 900;
-  font-style: italic;
-  font-family: sans-serif;
-  letter-spacing: 4px;
-  margin-left: 270px;
-  margin-right: 252px;
+  width: 130px;
+  height: 115px;
+  margin-left: 250px;
 }
 .hero-container
 {
@@ -107,6 +103,5 @@ div .custom_container
 .border-width-set
 {
   border-top: 3px solid blue;
-
 }
 @import "bootstrap";

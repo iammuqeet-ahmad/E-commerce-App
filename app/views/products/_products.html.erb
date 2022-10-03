@@ -42,10 +42,10 @@
 <%if product_count()%>
   <h3>No Products are avaiable</h3>
 <%end%>
+
 <%=link_to "Add Product", new_product_path,method: :get, class: "btn py-2 px-3 btn-primary mt-4"%>
+
 <div class="d-flex mt-4">
-<%= paginate @products %>  
-
-
+  <%= paginate @products %>  
 </div>
 

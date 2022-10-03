@@ -18,10 +18,12 @@
 //= require turbolinks
 //= require_tree .
 
-$(document).on('turbolinks:load', function () {
-  $('#flash_messages').delay(1000).fadeOut();
-})
-
+$(document).ready(function(){
+  $("button").click(function(){
+    $("#flash_messages").hide();
+    $(this).hide();
+  });
+});
 
 
 

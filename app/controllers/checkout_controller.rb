@@ -11,10 +11,9 @@ class CheckoutController < ApplicationController
                                                                   unit_amount: (total_amount(@cart).to_i * 100) },
                                                     quantity: 1
                                                   }],
-
                                                   mode: 'payment',
-                                                  success_url: success_msg_url,
-                                                  cancel_url: carts_url
+                                                  success_url: success_message_messages_url,
+                                                  cancel_url: cancle_message_messages_url
                                                 })
     respond_to do |format|
       format.js

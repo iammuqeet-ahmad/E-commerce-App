@@ -2,15 +2,13 @@
 
 # This is product controller
 class ProductsController < ApplicationController
-  require 'securerandom' # for randomly generating serialNo (alphanumeric)
-  before_action :set_product, only: %i[destroy update show edit] 
+  before_action :set_product, only: %i[destroy update show edit]
 
   def index
     @q = if user_signed_in?
            Product.where('user_id != ?', current_user.id).ransack(params[:q])
          else
-           Product.ransack(params[:q]) # q contains the seacrh params
-           # if search params exists then show that otherwise show all products
+           Product.ransack(params[:q])
          end
     @products = @q.result(distinct: true).order(:id).page params[:page]
   end
@@ -20,22 +18,18 @@ class ProductsController < ApplicationController
     @products = @q.result(distinct: true).order(:id).page params[:page]
   end
 
-  # user authentication for adding new product(user must be logged in)
   def new
     if user_signed_in?
       @product = Product.new
     else
       flash[:alert] = 'Pease login first to add Product'
-      redirect_to new_user_session_path # otherwise rediresting to login page
+      redirect_to new_user_session_path
     end
   end
 
-  # creating new product
   def create
     @product = Product.new(product_params)
-    @product.user_id = current_user.id # setting the current_user_id as the product_user_id
-    @product.serialNo = SecureRandom.alphanumeric(5) # generating the random serial  numberNo for the product
-    @product.quantity = 1
+    @product.user_id = current_user.id
     if @product.save
       flash[:success] = 'Successfully Added product.'
       redirect_to product_path(@product)
@@ -45,7 +39,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @photos = @product.photos.page(params[:page]).per(1)
+    @photos = @product.photos
     @comment = Comment.new
     @comments = @product.comments.order('created_at DESC')
   end

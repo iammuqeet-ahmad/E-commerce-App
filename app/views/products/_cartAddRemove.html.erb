@@ -1,5 +1,5 @@
 <% if @cart.include?(product) %>
-  <%= button_to "Remove from cart", remove_from_cart_path(product), method: :delete, class: "btn py-2 px-3 btn-danger mt-4"%>
+  <%= button_to "Remove from cart", remove_from_cart_cart_path(product), method: :delete, class: "btn py-2 px-3 btn-danger mt-4"%>
 <% else %>
-  <%= button_to "Add to cart", add_to_cart_path(product), class: "btn py-2 px-3 btn-success mt-4" %>
+  <%= button_to "Add to cart", add_to_cart_cart_path(product), class: "btn py-2 px-3 btn-success mt-4" %>
 <% end %>
