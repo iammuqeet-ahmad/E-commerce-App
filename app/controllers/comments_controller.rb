@@ -9,7 +9,11 @@ class CommentsController < ApplicationController
     authorize @product, policy_class: CommentPolicy
     @comment = @product.comments.new(comment_params)
     @comment.user = current_user
-    @comment.save
+    if @comment.save
+      flash[:success] = 'successfully created comment.'
+    else
+      flash[:error] = 'An error has occurred while creating comment.'
+    end
   end
 
   def edit
@@ -28,11 +32,8 @@ class CommentsController < ApplicationController
 
   def destroy
     authorize @comment
-    if @comment.destroy
-      flash[:success] = 'Comment deleted successfully.'
-    else
-      flash[:alert] = 'Comment deletion unsuccessfully.'
-    end
+    @comment.destroy
+    flash[:success] = 'Comment deleted successfully.'
   end
 
   private

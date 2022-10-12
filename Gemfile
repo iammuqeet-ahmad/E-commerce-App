@@ -25,10 +25,6 @@ gem 'pundit'
 gem 'ransack'
 gem 'stripe'
 
-group :development, :test do
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
-end
-
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
@@ -37,6 +33,9 @@ group :development do
 end
 
 group :development, :test do
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-minitest'
   gem 'rubocop-performance'
@@ -44,8 +43,11 @@ group :development, :test do
 end
 group :test do
   gem 'capybara', '>= 2.15'
-  gem 'chromedriver-helper'
-  gem 'selenium-webdriver'
+  gem 'faker'
+  gem 'rails-controller-testing'
+  gem 'shoulda-callback-matchers'
+  gem 'shoulda-matchers', '~> 5.0'
+  gem 'simplecov'
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

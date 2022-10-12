@@ -14,8 +14,12 @@ class ProductsController < ApplicationController
   end
 
   def my_products
-    @q = current_user.products.ransack(params[:q])
-    @products = @q.result(distinct: true).order(:id).page params[:page]
+    if user_signed_in?
+      @q = current_user.products.ransack(params[:q])
+      @products = @q.result(distinct: true).order(:id).page params[:page]
+    else
+      flash[:alert] = 'You must login first'
+    end
   end
 
   def new
@@ -60,19 +64,21 @@ class ProductsController < ApplicationController
 
   def destroy
     authorize @product
-    if @product.destroy
-      flash[:success] = 'Successfully Deleted product.'
-      redirect_to products_path
-    else
-      flash[:alert] = 'Error deleting product.'
-    end
+    @product.destroy
+    flash[:success] = 'Successfully Deleted product.'
+    redirect_to products_path
   end
 
   def update_quantity
     product = Product.find(params[:id])
-    product.quantity = params[:quantity]
-    product.save
-    redirect_to carts_path, notice: 'Successfully updated'
+    if params[:quantity].to_i >= 1
+      product.quantity = params[:quantity]
+      product.save
+      flash[:notice] = 'Successfully updated'
+    else
+      flash[:alert] = 'Quantity updation unsuccessful'
+    end
+    redirect_to carts_path
   end
 
   private
