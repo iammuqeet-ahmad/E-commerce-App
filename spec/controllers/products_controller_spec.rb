@@ -2,10 +2,11 @@
 
 require 'rails_helper'
 
-# images handling remaaining
+# images handling remaining
 describe ProductsController, type: :controller do
   let(:user) { create(:user) }
-  let(:product) { create(:product) }
+  let(:product) { create(:product, user_id: user.id) }
+  let(:user2) { create(:user) }
 
   before(:each) do
     sign_in(user)
@@ -90,21 +91,17 @@ describe ProductsController, type: :controller do
 
   describe 'Get #edit' do
     it 'render the edit form successfully' do
-      sign_out(user)
-      sign_in(product.user)
       get :edit, params: { id: product.id }
       expect(response).to render_template :edit
     end
 
     it 'successfully complete the http request status :ok' do
-      sign_out(user)
-      sign_in(product.user)
       get :edit, params: { id: product.id }
       expect(response).to have_http_status(:ok)
     end
 
     it 'edition of the product unsuccessful' do
-      sign_in(user)
+      sign_in(user2)
       get :edit, params: { id: product.id }
       expect(flash[:alert]).to eq('You are not authorized to perform this action.')
     end
@@ -113,23 +110,19 @@ describe ProductsController, type: :controller do
   describe 'Put #update' do
     it 'successfully update the product' do
       params = { name: 'pants', description: 'These are cotton pants', price: 5000 }
-      sign_out(user)
-      sign_in(product.user)
       put :update, params: { id: product.id, product: params }
       expect(flash[:success]).to eq('Successfully Updated product.')
     end
 
     it 'updation of Product unsuccessful' do
       params = { name: 'pants', description: 'These are cotton pants', price: 5000 }
-      sign_in(user)
+      sign_in(user2)
       put :update, params: { id: product.id, product: params }
       expect(flash[:alert]).to eq('You are not authorized to perform this action.')
     end
 
     it 'updation of Product unsuccessful and render edit' do
       params = { name: '', description: 'These are cotton pants', price: 5000 }
-      sign_out(user)
-      sign_in(product.user)
       put :update, params: { id: product.id, product: params }
       expect(response).to render_template :edit
     end
@@ -137,15 +130,11 @@ describe ProductsController, type: :controller do
 
   describe 'delete #destroy' do
     it 'successfully deletes the product' do
-      sign_out(user)
-      sign_in(product.user)
       delete :destroy, params: { id: product.id }
       expect(flash[:success]).to eq('Successfully Deleted product.')
     end
 
     it 'successfully deletes the product and redirect' do
-      sign_out(user)
-      sign_in(product.user)
       delete :destroy, params: { id: product.id }
       expect(response).to redirect_to products_path
     end
@@ -156,7 +145,7 @@ describe ProductsController, type: :controller do
     end
 
     it 'deletion of product Unsuccessful because of unauthorized user' do
-      sign_in(user)
+      sign_in(user2)
       delete :destroy, params: { id: product.id }
       expect(flash[:alert]).to eq('You are not authorized to perform this action.')
     end

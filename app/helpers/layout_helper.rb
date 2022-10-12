@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module LayoutHelper
   def flash_message
     flash_type = ''

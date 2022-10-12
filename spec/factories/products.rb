@@ -4,7 +4,6 @@ require 'faker'
 
 FactoryBot.define do
   factory :product do
-    association :user
     name { 'Boost Shoes' }
     description { Faker::Lorem.sentence(word_count: 10) }
     price { Faker::Number.non_zero_digit }
