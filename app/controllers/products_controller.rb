@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
       @q = current_user.products.ransack(params[:q])
       @products = @q.result(distinct: true).order(:id).page params[:page]
     else
-      flash[:alert] = 'You must login first'
+      flash[:alert] = I18n.t(:login_failed)
     end
   end
 
@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
     if user_signed_in?
       @product = Product.new
     else
-      flash[:alert] = 'Pease login first to add Product'
+      flash[:alert] = I18n.t(:login_failed)
       redirect_to new_user_session_path
     end
   end
@@ -35,10 +35,10 @@ class ProductsController < ApplicationController
     @product = Product.new(product_params)
     @product.user_id = current_user.id
     if @product.save
-      flash[:success] = 'Successfully Added product.'
+      flash[:success] = I18n.t(:product_successfully_created)
       redirect_to product_path(@product)
     else
-      render 'new', alert: 'Failed to add product'
+      render 'new', alert: I18n.t(:creation_of_product_unsuccessfully)
     end
   end
 
@@ -55,7 +55,7 @@ class ProductsController < ApplicationController
   def update
     authorize @product
     if @product.update(product_params)
-      flash[:success] = 'Successfully Updated product.'
+      flash[:success] = I18n.t(:product_successfully_updated)
       redirect_to product_path(@product)
     else
       render 'edit'
@@ -65,7 +65,7 @@ class ProductsController < ApplicationController
   def destroy
     authorize @product
     @product.destroy
-    flash[:success] = 'Successfully Deleted product.'
+    flash[:success] = I18n.t(:product_successfully_deleted)
     redirect_to products_path
   end
 
@@ -74,9 +74,9 @@ class ProductsController < ApplicationController
     if params[:quantity].to_i >= 1
       product.quantity = params[:quantity]
       product.save
-      flash[:notice] = 'Successfully updated'
+      flash[:notice] = I18n.t(:quantity_successfully_updated)
     else
-      flash[:alert] = 'Quantity updation unsuccessful'
+      flash[:alert] = I18n.t(:quantity_updation_unsuccessfully)
     end
     redirect_to carts_path
   end
