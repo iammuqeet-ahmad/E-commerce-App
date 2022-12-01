@@ -1,4 +1,4 @@
-<div class="container m-3 p-5">
+<div class="container ml-3 p-3">
 
 <h2>Sign up</h2>
 
@@ -25,12 +25,16 @@
 
   <div class="field mt-4">
     <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+    <%= f.text_field :name, autocomplete: "name" %>
   </div>
 
-  <div class="field mt-4">
+  <%
+=begin%>
+ <div class="field mt-4">
     <%= f.file_field :avatar, direct_upload: true, required: true, accept: 'image/png,image/jpeg,image/jpg'%>
-  </div>
+  </div> 
+<%
+=end%>
 
   <div class="actions mt-4">
     <%= f.submit "Sign up" %>
