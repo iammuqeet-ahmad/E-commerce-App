@@ -39,7 +39,6 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @photos = @product.photos
     @comment = Comment.new
     @comments = @product.comments.order('created_at DESC')
   end

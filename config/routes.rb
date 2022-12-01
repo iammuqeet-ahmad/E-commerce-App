@@ -36,4 +36,10 @@ Rails.application.routes.draw do
       post :coupon_check
     end
   end
+
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      resources :products, only: %i[index show]
+    end
+  end
 end
