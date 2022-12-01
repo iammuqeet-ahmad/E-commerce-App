@@ -3,7 +3,7 @@
 # This is comment controller
 class CommentsController < ApplicationController
   before_action :set_product
-  before_action :set_comment, only: %i[destroy update]
+  before_action :set_comment, only: %i[destroy update edit]
 
   def create
     authorize @product, policy_class: CommentPolicy
@@ -12,10 +12,17 @@ class CommentsController < ApplicationController
     @comment.save
   end
 
+  def edit
+    authorize @comment
+  end
+
   def update
+    authorize @comment
     if @comment.update(comment_params)
-      flash[:success] = 'Comment updated successfully.'
-      redirect_to product_comments_path(:product_id)
+      flash[:success] = 'Successfully Updated comment.'
+      redirect_to product_path(@product)
+    else
+      render 'edit'
     end
   end
 

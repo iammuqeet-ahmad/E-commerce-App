@@ -8,7 +8,6 @@ class ProductsController < ApplicationController
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result(distinct: true).order(:id).page params[:page]
-    # @products= Product.order(:id).page params[:page]
   end
 
   def new
@@ -55,7 +54,7 @@ class ProductsController < ApplicationController
 
   def destroy
     authorize @product
-    if @product.destroy ### if else
+    if @product.destroy
       flash[:success] = 'Successfully Deleted product.'
       redirect_to products_path
     else
