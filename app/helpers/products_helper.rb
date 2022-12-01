@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
+# This is product helper
 module ProductsHelper
-  # def user_login_validation
-  #   if !user_signed_in?
-  #     flash[:notice] = "Please sign in or sign up before continuing."
-  #   end
-  # end
+  def product_count
+    Product.count.zero?
+  end
 end

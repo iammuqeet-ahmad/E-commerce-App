@@ -1,41 +1,51 @@
+# frozen_string_literal: true
+
+# This is comment controller
 class CommentsController < ApplicationController
   before_action :set_product
-  before_action :authenticate_user!
+  before_action :set_comment, only: %i[destroy update edit]
 
   def create
-    if @product.user_id!=current_user.id
-      @comment= @product.comments.new(comment_params)
-      @comment.user= current_user
-      @comment.save
-    else
-      redirect_back(fallback_location:product_path(:product_id))
-    end
+    authorize @product, policy_class: CommentPolicy
+    @comment = @product.comments.new(comment_params)
+    @comment.user = current_user
+    @comment.save
   end
 
-  def show; 
+  def edit
+    authorize @comment
   end
 
   def update
-    @comment=Comment.find(params[:id])
+    authorize @comment
     if @comment.update(comment_params)
-      flash[:notice] = "Comment updated successfully."
-      redirect_to product_comments_path(:product_id)
+      flash[:success] = 'Successfully Updated comment.'
+      redirect_to product_path(@product)
+    else
+      render 'edit'
     end
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
-    @comment_id=@comment.id
-    @comment.destroy
-    flash[:notice] = "Comment deleted successfully."
+    authorize @comment
+    if @comment.destroy
+      flash[:success] = 'Comment deleted successfully.'
+    else
+      flash[:alert] = 'Comment deletion unsuccessfully.'
+    end
   end
+
   private
-  def comment_params 
-    params.require(:comment).permit(:content,:product_id)
-  end 
+
+  def comment_params
+    params.require(:comment).permit(:content, :product_id)
+  end
 
   def set_product
-    @product = Product.find(params[:product_id]) 
+    @product = Product.find(params[:product_id])
   end
 
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
 end

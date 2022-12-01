@@ -11,14 +11,19 @@
 // about supported directives.
 //
 //= require jquery3
-//= require jquery_ujs
 //= require popper
 //= require bootstrap-sprockets
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree
+//= require_tree .
 
 $(document).on('turbolinks:load', function () {
-  $('#flash_messages').delay(2000).fadeOut();
+  $('#flash_messages').delay(800).fadeOut();
 })
+
+
+
+
+
+

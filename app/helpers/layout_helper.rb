@@ -17,6 +17,7 @@ module LayoutHelper
     end
     content_dry(message, flash_type)
   end
+
   def content_dry(msg, str)
     hash = {}
     hash[:message] = msg

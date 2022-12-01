@@ -1,53 +1,50 @@
-<div class="container">  
-<h3>Product Details</h3>  
-  <div class="card mt-4" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt=<%=@product.name%>>
-    <div class="card-body">
-      <h5 class="card-title"><%=@product.name%></h5>
-      <p class="card-text"><%=@product.description%></p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><%=@product.price%></li>
-    </ul>
-    <% if user_signed_in?%>
-      <%if @product.user_id!= current_user.id%>
-        <div class="card-body">
-          <%=link_to "Add to Cart", root_path, class: "btn btn-success mt-4"%>
-        </div>
+<div class="container">     
+  <h3>Product Details</h3>  
+    <div class="card mt-4" style="width: 18rem;">
+      <%@photos.each do |photo|%>
+        <%= image_tag(photo) %>
       <%end%>
-    <%else%>
+      
+      <%=paginate @photos%>
+      
+      <%= render "listProduct", product: @product%>
+      
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Serial No.<%=@product.serialNo%></li>
+      </ul>
+      
+      <% if user_signed_in?%>
+        <%if @product.user_id!= current_user.id%>
+          <div class="card-body">
+            <%=render 'cartAddRemove', product: @product%>
+          </div>  
+        <%else%>
+          <div class="d-flex">
+            <%=link_to "Edit" , edit_product_path(@product), class: "btn btn-warning m-2"%>
+            <%=link_to "Delete" , product_path(@product),method: :delete, class: "btn btn-danger m-2 "%>
+          </div>
+        <%end%>
+      <%else%>
         <div class="card-body">
-          <%=link_to "Add to Cart", root_path, class: "btn btn-success mt-4"%>
+          <%=render 'cartAddRemove', product: @product%>
         </div>
-    <%end%>  
-  </div>
-  <% if user_signed_in?%>
-
-    <%if @product.user_id!= current_user.id%>
-
-      <div class="mt-4">
-        <h5>Leave a comment...</h5>
-        <%= render "comments/form" %>
-      </div> 
-    <% end %>
-  <%else%>
-    <div class="mt-4">
-        <h5>Leave a comment...</h5>
-        <%= render "comments/form" %>
+      <%end%>  
     </div>
+    
+    <% if user_signed_in? && @product.user_id!= current_user.id%>
+        <%= render "comments/form" %>
+    <%end%>
+    
+    <div class="custom_container bg-light mt-4"> 
+      <div id="comment_pane">
+        <% @comments.each do |comment|%>
+          <%= render "comments/comment", comment: comment%>
+        <%end%>
+      </div>
+    </div>
+  <%if product_count()%>
+    <h3>No Products are avaiable</h3>
   <%end%>
-  
-  <div class="custom_container bg-light mt-4"> 
-    <div id="comment_pane">
-      <% @comments.each do |comment|%>
-        <%= render "comments/comment", comment: comment%>
-      <%end%>
-    </div>
-  </div> 
-<%if Product.count==0%>
-  <h3>No Products are avaiable</h3>
-<%end%>
-
   <%=link_to "Add Product", new_product_path,method: :get, class: "btn btn-primary mt-4"%>
   <%=link_to "See All Products", products_path,method: :get, class: "btn btn-primary mt-4 ml-4"%>
 </div>

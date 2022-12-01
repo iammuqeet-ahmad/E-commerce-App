@@ -46,18 +46,12 @@ ActiveRecord::Schema.define(version: 2022_09_12_150617) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "images", force: :cascade do |t|
-    t.bigint "imageable_id"
-    t.string "imageable_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "products", force: :cascade do |t|
     t.string "serialNo"
     t.string "name"
     t.text "description"
-    t.float "price"
+    t.integer "quantity"
+    t.integer "price"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -70,6 +64,10 @@ ActiveRecord::Schema.define(version: 2022_09_12_150617) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
