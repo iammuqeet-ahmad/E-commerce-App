@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
+# This is user controller
 class UsersController < ApplicationController
-  def index
-  end
+  def index; end
 end
