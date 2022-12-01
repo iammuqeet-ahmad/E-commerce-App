@@ -1,0 +1,98 @@
+nav .logo
+{
+  font-size: xx-large;
+  font-weight: 900;
+  font-style: italic;
+  font-family: sans-serif;
+  letter-spacing: 4px;
+  margin-left: 130px;
+  margin-right: 252px;
+}
+.hero-container
+{
+  position: absolute;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  top: 268px;
+  margin-left: 15%; 
+}
+.margin_extra
+{
+  margin-left: 30%;
+}
+div .custom_container 
+{
+  height: 350px;
+  overflow: scroll !important;
+}
+.font-bold
+{
+  font-weight: 600 !important;
+}
+.numberCircle {
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  padding: 4px;
+  background: blue;
+  color: white;
+  text-align: center;
+
+  font: 10px Arial, sans-serif;
+  position: relative;
+  top: -10px;
+  right: 12px;
+}
+.sizing{
+  width: 30px;
+  height: 30px;
+}
+.cart{
+  @extend .sizing;
+  margin-left: 1rem;
+
+}
+.cart-arrow{
+  @extend .sizing;
+
+}
+.home
+{
+  font-weight: 500;
+}
+.float-btn
+{
+  float: right;
+  direction: rtl;
+}
+.aliging
+{
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+.d-flex .avatar
+{
+  width: 54px;
+  height: 54px;
+}
+
+.d-flex .padding-setting
+{
+  padding: 0 40px 0 40px;
+  justify-content: center;
+  align-items: center;  
+  flex-direction: column;
+}
+.cart-image img
+{
+  width: 50px;
+  margin-left: 12%;
+}
+
+@import "bootstrap";

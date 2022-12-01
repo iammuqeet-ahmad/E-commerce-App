@@ -1,0 +1,18 @@
+development:
+  cloud_name: dagcush5g
+  api_key: '164537314785319'
+  api_secret: "YBZe8fSVvLTvUVK02aQMAQQQRNs"
+  enhance_image_tag: true
+  static_file_support: false
+production:
+  cloud_name: dagcush5g
+  api_key: '164537314785319'
+  api_secret: "YBZe8fSVvLTvUVK02aQMAQQQRNs"
+  enhance_image_tag: true
+  static_file_support: true
+test:
+  cloud_name: dagcush5g
+  api_key: '164537314785319'
+  api_secret: "YBZe8fSVvLTvUVK02aQMAQQQRNs"
+  enhance_image_tag: true
+  static_file_support: false

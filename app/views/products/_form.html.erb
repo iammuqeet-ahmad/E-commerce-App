@@ -1,0 +1,28 @@
+<% if @product.errors.any?%>
+  <div class="alert alert-danger alert-dismissable">
+    <ul>
+        <%@product.errors.full_messages.each do |msg|%>
+        <li><%=msg%></li>
+        <%end%>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for @product do |f| %>
+   
+    <%=f.label :name %><br>
+    <%= f.text_field :name, required: true %><br>
+
+    <%=f.label :description %><br>
+    <%= f.text_area :description,required: true  %><br><br>
+
+    <%=f.label :price %><br>
+    <%= f.number_field :price,required: true  %><br><br>
+    
+    <div class='form-outline form-white mb-4'>
+      <%= f.file_field :photos, accept: 'image/png,image/jpeg,image/jpg',multiple: true ,required: true , class: 'form-control text-center form-2' %>
+    </div>
+
+    <%= f.submit%>
+   
+  <% end %> 
