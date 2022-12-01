@@ -33,6 +33,20 @@
 
 en:
   hello: "Hello world"
+  product_successfully_created: 'Successfully Added product.'
+  creation_of_product_unsuccessfully: 'Product creation Unsuccessful.' 
+  product_successfully_updated: 'Successfully Updated product.' 
+  product_successfully_deleted: 'Successfully Deleted product.'
+  quantity_successfully_updated: 'Successfully updated quantity.' 
+  quantity_updation_unsuccessfully: 'Quantity updation unsuccessful.'
+  login_failed: 'Please login first.'
+  not_authorized: 'You are not authorized to perform this action.'
+  
+  comment_created_successfully: 'Comment created successfully.'
+  comment_creation_unsuccessful: 'Comment creation Unsuccessfull.'
+  comment_updated_successfully: 'Comment updated successfully.'
+  comment_deleted_successfully: 'Comment deleted successfully.'
+  
   views:
     pagination:
       previous: "&lt; Previous"

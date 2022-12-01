@@ -9,7 +9,11 @@ class CommentsController < ApplicationController
     authorize @product, policy_class: CommentPolicy
     @comment = @product.comments.new(comment_params)
     @comment.user = current_user
-    @comment.save
+    if @comment.save
+      flash[:success] = I18n.t(:comment_created_successfully)
+    else
+      flash[:error] = I18n.t(:comment_creation_unsuccessful)
+    end
   end
 
   def edit
@@ -19,7 +23,7 @@ class CommentsController < ApplicationController
   def update
     authorize @comment
     if @comment.update(comment_params)
-      flash[:success] = 'Successfully Updated comment.'
+      flash[:success] = I18n.t(:comment_updated_successfully)
       redirect_to product_path(@product)
     else
       render 'edit'
@@ -28,11 +32,8 @@ class CommentsController < ApplicationController
 
   def destroy
     authorize @comment
-    if @comment.destroy
-      flash[:success] = 'Comment deleted successfully.'
-    else
-      flash[:alert] = 'Comment deletion unsuccessfully.'
-    end
+    @comment.destroy
+    flash[:success] = I18n.t(:comment_deleted_successfully)
   end
 
   private
