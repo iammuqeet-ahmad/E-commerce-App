@@ -2,9 +2,7 @@
 
 # This is comment policies
 class CommentPolicy < ApplicationPolicy
-  # This is scope
   class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
   end
 
   def create?
@@ -12,14 +10,14 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.id == record.user_id
+    owner?
   end
 
   def update?
-    user.id == record.user_id
+    owner?
   end
 
   def destroy?
-    user.id == record.user_id
+    owner?
   end
 end

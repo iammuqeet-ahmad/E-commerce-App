@@ -13,6 +13,11 @@ module CartsHelper
   end
 
   def cart_count(cart)
-    cart.count != 0
+    if cart.count != 0
+      true
+    else
+      $val = 0
+      false
+    end
   end
 end

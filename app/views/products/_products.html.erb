@@ -1,0 +1,51 @@
+
+<form class="d-flex my-2 my-lg-0">
+  <%= search_form_for @q, url: products_path do |form|%>
+      <div class="form-control mr-sm-2">
+        <%= form.text_field :name_or_description_or_serialNo_cont, class:"border-0 w-100",placeholder:"Search..."%>
+      </div>
+      <div class="form-group mx-2">
+        <%= form.submit class:"btn py-2 px-3 btn-outline-success"%>
+      </div>
+  <%end%>
+</form>  
+<div class="container-fluid">
+  <div class="row">
+    <%@products.each do |product|%>
+      <div class="col-sm-4">
+        <div class="card mt-4 shadow" style="width: 23rem;">
+          <%= image_tag(product.photos[0]) %> 
+          <%= render "listProduct", product: product%>
+          <div class="card-body text-muted">
+            <%=pluralize(product.comments.count," Review")%>
+          </div>
+          
+          <div class="d-flex card-body">
+            <%=link_to "Show Details", product_path(product), class: "btn py-2 px-3 btn-primary mt-4 mx-2"%>
+            <%if user_signed_in?%>
+              <%if product.user_id!=current_user.id%>
+                <%=render 'cartAddRemove', product: product%>
+              <%else%>
+                <%=link_to "Edit" , edit_product_path(product), class: "btn btn-warning mt-4 mx-2"%>
+                <%=link_to "Delete" , product_path(product),method: :delete, class: "btn btn-danger mt-4 "%>
+              <%end%>
+            <%else%>
+              <%=render 'cartAddRemove',product: product%>
+            <%end%> 
+          </div>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+
+<%if product_count()%>
+  <h3>No Products are avaiable</h3>
+<%end%>
+
+<%=link_to "Add Product", new_product_path,method: :get, class: "btn py-2 px-3 btn-primary mt-4"%>
+
+<div class="d-flex mt-4">
+  <%= paginate @products %>  
+</div>
+

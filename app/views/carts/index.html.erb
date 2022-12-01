@@ -17,34 +17,51 @@
       </tbody>
     </table>
 
-    <%if user_signed_in?%>
+    <%
+=begin%>
+ <%if user_signed_in?%>
         <%= form_with model: @carts,url: "carts/coupon_check", method: :post do |form| %>
         <div class="d-flex w-25">
           <%= form.text_field :$promo, placeholder:"Enter Promo Code", autocomplete: "off", class:"form-group mx-2"%>
-          <%= form.submit "Submit", class:"btn btn-info" %>
+          <%= form.submit "Submit", class:"btn py-2 px-3 btn-info" %>
+        <% end %>
+      </div>
+    <%end%> 
+<%
+=end%>
+
+    <%if user_signed_in?%>
+        <%= form_with model: @coupon,url: "/coupons/coupon_check", method: :post do |form| %>
+        <div class="d-flex w-25">
+          <%= form.text_field :$promo, placeholder:"Enter Promo Code", autocomplete: "off", class:"form-group mx-2"%>
+          <%= form.submit "Submit", class:"btn py-2 px-3 btn-info" %>
         <% end %>
       </div>
     <%end%>
 
-    <div class="w-100 float-btn totals-value">
+    <div class="w-100 float-btn py-2 px-3 totals-value">
       <h5>Total : <%=number_to_currency(total_amount(@cart), :unit => "$", :separator => ".", :delimiter => ",")%></h5>
     </div>
-    
+    <%
+=begin%>
+ <%byebug%> 
+<%
+=end%>
     <%if user_signed_in?%>
-      <div class="w-100 float-btn totals-value">
+      <div class="w-100 float-btn py-2 px-3 totals-value">
         <h5>Discount Amount : <%=number_to_currency($val*total_amount(@cart), :unit => "$", :separator => ".", :delimiter => ",")%></h5>
       </div>
 
-      <div class="w-100 float-btn totals-value">
+      <div class="w-100 float-btn py-2 px-3 totals-value">
         <h5>After Discount Total : <%=number_to_currency(total_amount(@cart)-($val*total_amount(@cart)), :unit => "$", :separator => ".", :delimiter => ",")%></h5>
       </div>
     <%end%> 
 
 
     <%if user_signed_in?%>
-      <%=button_to "Proceed to checkout",carts_checkout_create_path,params: {cart: @cart},remote: true,class:"btn btn-outline-success text-uppercase float-btn"%> 
+      <%=button_to "Proceed to checkout",checkout_index_path,params: {cart: @cart},remote: true,class:"btn py-2 px-3 btn-outline-success text-uppercase float-btn"%> 
     <%else%>
-      <%=button_to "Proceed to checkout",new_user_session_path,class:"btn btn-outline-success text-uppercase float-btn"%>
+      <%=button_to "Proceed to checkout",new_user_session_path,class:"btn py-2 px-3 btn-outline-success text-uppercase float-btn"%>
     <%end%>
 
   <%else%>

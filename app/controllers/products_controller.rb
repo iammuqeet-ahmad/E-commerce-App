@@ -2,19 +2,31 @@
 
 # This is product controller
 class ProductsController < ApplicationController
-  before_action :remove_product, only: %i[remove_from_cart remove_in_cart]
   before_action :set_product, only: %i[destroy update show edit]
 
   def index
-    @q = Product.ransack(params[:q])
+    @q = if user_signed_in?
+           Product.where('user_id != ?', current_user.id).ransack(params[:q])
+         else
+           Product.ransack(params[:q])
+         end
     @products = @q.result(distinct: true).order(:id).page params[:page]
+  end
+
+  def my_products
+    if user_signed_in?
+      @q = current_user.products.ransack(params[:q])
+      @products = @q.result(distinct: true).order(:id).page params[:page]
+    else
+      flash[:alert] = I18n.t(:login_failed)
+    end
   end
 
   def new
     if user_signed_in?
       @product = Product.new
     else
-      flash[:alert] = 'Pease login first to add Product'
+      flash[:alert] = I18n.t(:login_failed)
       redirect_to new_user_session_path
     end
   end
@@ -22,18 +34,16 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     @product.user_id = current_user.id
-    @product.serialNo = SecureRandom.alphanumeric(5)
-    @product.quantity = 1
     if @product.save
-      flash[:success] = 'Successfully Added product.'
+      flash[:success] = I18n.t(:product_successfully_created)
       redirect_to product_path(@product)
     else
-      render 'new', alert: 'Failed to add product'
+      render 'new', alert: I18n.t(:creation_of_product_unsuccessfully)
     end
   end
 
   def show
-    @photos = @product.photos.page(params[:page]).per(1)
+    @photos = @product.photos
     @comment = Comment.new
     @comments = @product.comments.order('created_at DESC')
   end
@@ -45,7 +55,7 @@ class ProductsController < ApplicationController
   def update
     authorize @product
     if @product.update(product_params)
-      flash[:success] = 'Successfully Updated product.'
+      flash[:success] = I18n.t(:product_successfully_updated)
       redirect_to product_path(@product)
     else
       render 'edit'
@@ -54,47 +64,27 @@ class ProductsController < ApplicationController
 
   def destroy
     authorize @product
-    if @product.destroy
-      flash[:success] = 'Successfully Deleted product.'
-      redirect_to products_path
-    else
-      flash[:alert] = 'Error deleting product.'
-    end
-  end
-
-  def add_to_cart
-    id = params[:id].to_i
-    session[:cart] << id unless session[:cart].include?(id)
-    redirect_to products_path, notice: 'Successfully added to cart.'
-  end
-
-  def remove_from_cart
-    redirect_to products_path, notice: 'Successfully removed from cart.'
-  end
-
-  def remove_in_cart
-    redirect_to carts_path, notice: 'Successfully removed from cart.'
+    @product.destroy
+    flash[:success] = I18n.t(:product_successfully_deleted)
+    redirect_to products_path
   end
 
   def update_quantity
     product = Product.find(params[:id])
-    product.quantity = params[:product][:quantity]
-    product.save
-    redirect_to carts_path, notice: 'Successfully updated'
+    if params[:quantity].to_i >= 1
+      product.quantity = params[:quantity]
+      product.save
+      flash[:notice] = I18n.t(:quantity_successfully_updated)
+    else
+      flash[:alert] = I18n.t(:quantity_updation_unsuccessfully)
+    end
+    redirect_to carts_path
   end
 
   private
 
   def product_params
     params.require(:product).permit(:name, :description, :price, :user_id, photos: [])
-  end
-
-  def remove_product
-    id = params[:id].to_i
-    session[:cart].delete(id)
-    @product = Product.find_by(id: id)
-    @product.quantity = 1
-    @product.save
   end
 
   def set_product

@@ -2,13 +2,17 @@
 
 # This is application controller
 class ApplicationController < ActionController::Base
-  require 'securerandom'
   include Pundit::Authorization
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionController::RoutingError, with: :render404
+  rescue_from ActiveRecord::RecordNotFound, with: :render404
+
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :initialize_session
-  before_action :load_cart
-  before_action :set_search
+  before_action :set_cart
+
+  $val = 0
 
   private
 
@@ -16,13 +20,8 @@ class ApplicationController < ActionController::Base
     session[:cart] ||= []
   end
 
-  def load_cart
+  def set_cart
     @cart = Product.find(session[:cart])
-  end
-
-  def set_search
-    @q = Product.ransack(params[:q])
-    @products = @q.result(distinct: true).order(:id).page params[:page]
   end
 
   protected
@@ -32,7 +31,11 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:alert] = 'You are not authorized to perform this action.'
+    flash[:alert] = I18n.t(:not_authorized)
     redirect_back(fallback_location: root_path)
+  end
+
+  def render404
+    render file: Rails.root.join('public/404.html'), status: :not_found
   end
 end

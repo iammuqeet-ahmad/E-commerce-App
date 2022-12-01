@@ -15,14 +15,14 @@ development:
   adapter: postgresql
   database: postgres
   username: dev
-  password: dev
+  password: ENV[database_password]
 test:
   adapter: postgresql
   database: postgres
   username: dev
-  password: dev
+  password: ENV[database_password]
 production:
   adapter: postgresql
   database: postgres
   username: dev
-  password: dev
+  password: ENV[database_password]

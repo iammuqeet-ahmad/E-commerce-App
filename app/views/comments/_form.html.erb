@@ -3,7 +3,7 @@
   <%= form_with model: [@product,@comment] do |f| %>
     <div class="d-flex w-50 h-25">
       <%=f.text_field :content, placeholder: "Enter a comment",class:"form-control mr-sm-2", required: true%>
-      <%=f.submit "Comment",class:"btn btn-outline-success m-2 my-sm-0"%>
+      <%=f.submit "Comment",class:"btn py-2 px-3 btn-outline-success m-2 my-sm-0"%>
     </div>
   <% end %>
 </div>

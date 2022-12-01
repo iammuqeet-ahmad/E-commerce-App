@@ -10,11 +10,11 @@
   <td>
     <div class="product-quantity">
       <%= form_with model: @products,url: "products/#{cart.id}/update_quantity", method: :patch do |form| %>
-        <%= form.number_field :quantity, value:cart.quantity%>
+        <%= form.number_field :quantity, value:cart.quantity, min:1%>
         <%= form.submit "Update" %>
       <% end %>
     </div>
   </td>
   <td><%=number_to_currency(cart.price, :unit => "$", :separator => ".", :delimiter => ",")%></td>
-  <td><%= link_to "Remove", remove_in_cart_path(cart), method: :delete, class: "link-secondary"%></td>
+  <td><%= link_to "Remove", remove_in_cart_cart_path(cart), method: :delete, class: "link-secondary"%></td>
 </tr>
