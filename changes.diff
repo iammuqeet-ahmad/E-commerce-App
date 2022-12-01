@@ -1,0 +1,358 @@
+diff --git a/Gemfile b/Gemfile
+index 0e659fb..760b19d 100644
+--- a/Gemfile
++++ b/Gemfile
+@@ -24,7 +24,8 @@ gem 'kaminari'
+ gem 'pundit'
+ gem 'ransack'
+ gem 'stripe'
+-
++gem 'active_model_serializers', '~> 0.10.0'
++gem 'rack-cors'
+ group :development, :test do
+   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+ end
+diff --git a/Gemfile.lock b/Gemfile.lock
+index 8110321..8174fa6 100644
+--- a/Gemfile.lock
++++ b/Gemfile.lock
+@@ -24,6 +24,11 @@ GEM
+       erubi (~> 1.4)
+       rails-dom-testing (~> 2.0)
+       rails-html-sanitizer (~> 1.0, >= 1.0.3)
++    active_model_serializers (0.10.13)
++      actionpack (>= 4.1, < 7.1)
++      activemodel (>= 4.1, < 7.1)
++      case_transform (>= 0.2)
++      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
+     activejob (5.2.8.1)
+       activesupport (= 5.2.8.1)
+       globalid (>= 0.3.6)
+@@ -70,6 +75,8 @@ GEM
+       rack-test (>= 0.6.3)
+       regexp_parser (>= 1.5, < 3.0)
+       xpath (~> 3.2)
++    case_transform (0.2)
++      activesupport
+     childprocess (4.1.0)
+     chromedriver-helper (2.1.1)
+       archive-zip (~> 0.10)
+@@ -115,6 +122,7 @@ GEM
+       railties (>= 4.2.0)
+       thor (>= 0.14, < 2.0)
+     json (2.6.2)
++    jsonapi-renderer (0.2.2)
+     kaminari (1.2.2)
+       activesupport (>= 4.1.0)
+       kaminari-actionview (= 1.2.2)
+@@ -153,7 +161,7 @@ GEM
+     parallel (1.22.1)
+     parser (3.1.2.1)
+       ast (~> 2.4.1)
+-    pg (1.4.3)
++    pg (1.4.4)
+     popper_js (2.11.6)
+     public_suffix (5.0.0)
+     puma (3.12.6)
+@@ -161,6 +169,8 @@ GEM
+       activesupport (>= 3.0.0)
+     racc (1.6.0)
+     rack (2.2.4)
++    rack-cors (1.1.1)
++      rack (>= 2.0.0)
+     rack-test (2.0.2)
+       rack (>= 1.3)
+     rails (5.2.8.1)
+@@ -298,6 +308,7 @@ PLATFORMS
+   x86_64-linux
+
+ DEPENDENCIES
++  active_model_serializers (~> 0.10.0)
+   bootsnap (>= 1.1.0)
+   bootstrap
+   byebug
+@@ -314,6 +325,7 @@ DEPENDENCIES
+   pg
+   puma (~> 3.11)
+   pundit
++  rack-cors
+   rails (~> 5.2.8, >= 5.2.8.1)
+   ransack
+   rubocop
+@@ -335,4 +347,4 @@ RUBY VERSION
+    ruby 2.7.2p137
+
+ BUNDLED WITH
+-   2.3.20
++   2.3.24
+diff --git a/app/assets/images/logo.png b/app/assets/images/logo.png
+new file mode 100644
+index 0000000..849b867
+Binary files /dev/null and b/app/assets/images/logo.png differ
+diff --git a/app/assets/images/sneakerlogo.png b/app/assets/images/sneakerlogo.png
+new file mode 100644
+index 0000000..13c883d
+Binary files /dev/null and b/app/assets/images/sneakerlogo.png differ
+diff --git a/app/assets/stylesheets/application.scss b/app/assets/stylesheets/application.scss
+index 18c5056..12534b5 100644
+--- a/app/assets/stylesheets/application.scss
++++ b/app/assets/stylesheets/application.scss
+@@ -13,4 +13,4 @@
+  *= require_tree .
+  *= require_self
+  */
+- @import "custom";
+\ No newline at end of file
++ @import "custom";
+diff --git a/app/assets/stylesheets/custom.css.scss b/app/assets/stylesheets/custom.css.scss
+index b048d43..23ec7cc 100644
+--- a/app/assets/stylesheets/custom.css.scss
++++ b/app/assets/stylesheets/custom.css.scss
+@@ -1,8 +1,10 @@
+ nav .logo
+ {
+-  width: 130px;
+-  height: 115px;
+-  margin-left: 250px;
++  height: 190px;
++  margin-left: 150px;
++  position: absolute;
++  top: -33px;
++  width: auto;
+ }
+ .hero-container
+ {
+@@ -12,7 +14,7 @@ nav .logo
+   flex-direction: column;
+   align-items: flex-start;
+   top: 268px;
+-  margin-left: 15%;
++  margin-left: 15%;
+ }
+ .hero-text-sizing
+ {
+@@ -21,9 +23,9 @@ nav .logo
+ }
+ .margin_extra
+ {
+-  margin-left: 30%;
++  margin-left: 50%;
+ }
+-div .custom_container
++div .custom_container
+ {
+   height: 350px;
+   overflow: scroll !important;
+@@ -92,7 +94,7 @@ div .custom_container
+ {
+   padding: 0 40px 0 40px;
+   justify-content: center;
+-  align-items: center;
++  align-items: center;
+   flex-direction: column;
+ }
+ .cart-image img
+diff --git a/app/controllers/api/v1/api_controller.rb b/app/controllers/api/v1/api_controller.rb
+new file mode 100644
+index 0000000..d9f8b3d
+--- /dev/null
++++ b/app/controllers/api/v1/api_controller.rb
+@@ -0,0 +1,11 @@
++module Api
++  module V1
++    class ApiController < ActionController::Base
++      def exception_handler
++        yield
++        rescue ActiveRecord::RecordNotFound
++        render json: { message: 'Record not found' }, status: 404
++      end
++    end
++  end
++end
+diff --git a/app/controllers/api/v1/products_controller.rb b/app/controllers/api/v1/products_controller.rb
+new file mode 100644
+index 0000000..19b349a
+--- /dev/null
++++ b/app/controllers/api/v1/products_controller.rb
+@@ -0,0 +1,15 @@
++module Api
++  module V1
++    class ProductsController < ApplicationController
++
++      def index
++        render json: Product.all, message:"Listing all the products",each_serializer: ProductsSerializer
++      end
++
++      def show
++        render json: Product.find(params[:id]),message:"Showing details of the product",serializer: ProductSerializer
++      end
++
++    end
++  end
++end
+diff --git a/app/controllers/products_controller.rb b/app/controllers/products_controller.rb
+index 4cd8e1a..b446cdf 100644
+--- a/app/controllers/products_controller.rb
++++ b/app/controllers/products_controller.rb
+@@ -39,7 +39,7 @@ class ProductsController < ApplicationController
+   end
+
+   def show
+-    @photos = @product.photos
++    # @photos = @product.photos
+     @comment = Comment.new
+     @comments = @product.comments.order('created_at DESC')
+   end
+diff --git a/app/serializers/product_serializer.rb b/app/serializers/product_serializer.rb
+new file mode 100644
+index 0000000..24d9bcf
+--- /dev/null
++++ b/app/serializers/product_serializer.rb
+@@ -0,0 +1,9 @@
++class ProductSerializer < ActiveModel::Serializer
++  attributes :id, :name, :description, :price, :image_urls
++
++  def image_urls
++    urls=object.photos.map{|photo|
++      photo.service_url
++    }
++  end
++end
+diff --git a/app/serializers/products_serializer.rb b/app/serializers/products_serializer.rb
+new file mode 100644
+index 0000000..9ef67d1
+--- /dev/null
++++ b/app/serializers/products_serializer.rb
+@@ -0,0 +1,8 @@
++class ProductsSerializer < ActiveModel::Serializer
++
++  attributes :id, :name, :description, :price, :image_url
++
++  def image_url
++    object.photos.first.service_url
++  end
++end
+diff --git a/app/views/api/v1/products/index.json.jbuilder b/app/views/api/v1/products/index.json.jbuilder
+new file mode 100644
+index 0000000..70ab46d
+--- /dev/null
++++ b/app/views/api/v1/products/index.json.jbuilder
+@@ -0,0 +1,12 @@
++json.products @products do |product|
++  json.id product.id
++  json.name product.name
++  json.description product.description
++  json.price product.price
++  json.images product.photos do |photo|
++    json.url url_for(photo)
++  end
++end
++
++
++
+diff --git a/app/views/api/v1/products/show.json.jbuilder b/app/views/api/v1/products/show.json.jbuilder
+new file mode 100644
+index 0000000..c676e14
+--- /dev/null
++++ b/app/views/api/v1/products/show.json.jbuilder
+@@ -0,0 +1,7 @@
++json.id @product.id
++json.name @product.name
++json.description @product.description
++json.price @product.price
++json.images @product.photos do |photo|
++  json.url url_for(photo)
++end
+diff --git a/app/views/layouts/_navbar.html.erb b/app/views/layouts/_navbar.html.erb
+index ac3c83d..cee004a 100644
+--- a/app/views/layouts/_navbar.html.erb
++++ b/app/views/layouts/_navbar.html.erb
+@@ -1,14 +1,14 @@
+-<nav class="d-flex navbar-fixed-top bg-white navbar-expand-lg navbar-light p-4 w-100">
+-  <a class="navbar-brand" href="/"><%= image_tag "addidas.png", class:"logo"  %></a>
++<nav class="d-flex navbar-fixed-top bg-white navbar-expand-lg navbar-light p-5 w-100">
++  <a class="navbar-brand" href="/"><%= image_tag "sneakerlogo.png", class:"logo"  %></a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+   </button>
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+-
++
+     <%if user_signed_in?%>
+       <%=link_to "SignOut", destroy_user_session_path, :method => :delete, class: "btn py-2 px-3 btn-outline-danger my-sm-0 px-3 margin_extra"%>
+
+-    <%else%>
++    <%else%>
+       <%=link_to "LogIn", new_user_session_path, class: "btn py-2 px-3 btn-outline-primary my-sm-0 px-3 margin_extra"%>
+       <%=link_to "SignUp", new_user_registration_path, class: "btn py-2 px-3 btn-outline-primary m-3 my-sm-0 px-3"%>
+     <%end%>
+@@ -16,7 +16,7 @@
+     <%= link_to carts_path do %>
+       <%= image_tag "cart.png", id:"logo", class:"cart"  %>
+     <% end %>
+-
++
+     <%if cart_count(@cart)%>
+       <div class="numberCircle">
+         <span><%=@cart.count%></span>
+@@ -36,5 +36,5 @@
+     <% end %>
+   <%end%>
+
+-  </div>
++  </div>
+ </nav>
+diff --git a/app/views/layouts/application.html.erb b/app/views/layouts/application.html.erb
+index 4b8bb32..99d4efc 100644
+--- a/app/views/layouts/application.html.erb
++++ b/app/views/layouts/application.html.erb
+@@ -11,7 +11,7 @@
+   </head>
+   <body>
+     <%= render "layouts/navbar" %>
+-    <%=render "layouts/alerts"%>
++    <%=render "layouts/alerts"%>
+     <%= yield %>
+     <%=render "layouts/footer"%>
+   </body>
+diff --git a/app/views/products/new.html.erb b/app/views/products/new.html.erb
+index 22d7954..cac3b7f 100644
+--- a/app/views/products/new.html.erb
++++ b/app/views/products/new.html.erb
+@@ -7,6 +7,5 @@
+         <%=link_to "See All Products", products_path,method: :get, class: "btn py-2 px-3 btn-primary mt-4 ml-4"%>
+       </div>
+     </div>
+-  </div>
++  </div>
+ </div>
+-
+\ No newline at end of file
+diff --git a/config/initializers/cors.rb b/config/initializers/cors.rb
+new file mode 100644
+index 0000000..2800f26
+--- /dev/null
++++ b/config/initializers/cors.rb
+@@ -0,0 +1,6 @@
++Rails.application.config.middleware.insert_before 0, Rack::Cors do
++  allow do
++    origins 'http://localhost:3000/'
++    resource '*', headers: :any, methods: [:get, :post, :patch, :put, :delete, :options]
++  end
++end
+diff --git a/config/routes.rb b/config/routes.rb
+index 2d44223..271a30b 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -36,4 +36,11 @@ Rails.application.routes.draw do
+       post :coupon_check
+     end
+   end
++
++  namespace :api, defaults: {format: :json} do
++    namespace :v1 do
++      resources :products, only: %i[index show]
++    end
++  end
++
+ end

@@ -1,14 +1,14 @@
-<nav class="d-flex navbar-fixed-top bg-white navbar-expand-lg navbar-light p-4 w-100">
-  <a class="navbar-brand" href="/"><%= image_tag "addidas.png", class:"logo"  %></a>
+<nav class="d-flex navbar-fixed-top bg-white navbar-expand-lg navbar-light p-5 w-100">
+  <a class="navbar-brand" href="/"><%= image_tag "sneaker.jpg", class:"logo"  %></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    
+
     <%if user_signed_in?%>
       <%=link_to "SignOut", destroy_user_session_path, :method => :delete, class: "btn py-2 px-3 btn-outline-danger my-sm-0 px-3 margin_extra"%>
 
-    <%else%>  
+    <%else%>
       <%=link_to "LogIn", new_user_session_path, class: "btn py-2 px-3 btn-outline-primary my-sm-0 px-3 margin_extra"%>
       <%=link_to "SignUp", new_user_registration_path, class: "btn py-2 px-3 btn-outline-primary m-3 my-sm-0 px-3"%>
     <%end%>
@@ -16,7 +16,7 @@
     <%= link_to carts_path do %>
       <%= image_tag "cart.png", id:"logo", class:"cart"  %>
     <% end %>
-    
+
     <%if cart_count(@cart)%>
       <div class="numberCircle">
         <span><%=@cart.count%></span>
@@ -36,5 +36,5 @@
     <% end %>
   <%end%>
 
-  </div> 
+  </div>
 </nav>

@@ -3,6 +3,11 @@ nav .logo
   width: 130px;
   height: 115px;
   margin-left: 250px;
+  height: 190px;
+  margin-left: 150px;
+  position: absolute;
+  top: -33px;
+  width: auto;
 }
 .hero-container
 {
@@ -12,7 +17,7 @@ nav .logo
   flex-direction: column;
   align-items: flex-start;
   top: 268px;
-  margin-left: 15%; 
+  margin-left: 15%;
 }
 .hero-text-sizing
 {
@@ -21,9 +26,9 @@ nav .logo
 }
 .margin_extra
 {
-  margin-left: 30%;
+  margin-left: 50%;
 }
-div .custom_container 
+div .custom_container
 {
   height: 350px;
   overflow: scroll !important;
@@ -92,7 +97,7 @@ div .custom_container
 {
   padding: 0 40px 0 40px;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   flex-direction: column;
 }
 .cart-image img

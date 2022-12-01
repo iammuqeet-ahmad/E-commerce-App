@@ -25,6 +25,13 @@ gem 'pundit'
 gem 'ransack'
 gem 'stripe'
 
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'rack-cors'
+
+group :development, :test do
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+end
+
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
